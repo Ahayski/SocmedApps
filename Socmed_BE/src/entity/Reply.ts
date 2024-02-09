@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm"
 import { User } from "./User"
 import { Thread } from "./Thread"
 
@@ -15,17 +15,19 @@ export class Reply {
     file_reply: string
 
     @Column()
-    created_at: string
-
-    @OneToMany(() => Reply, (reply) => reply.user, {
-    })
-    replies: Reply[];
+    created_at: Date
 
     @ManyToOne(() => User, (user) => user.replies, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     })
+    @JoinColumn({ name: "user_id" }) // untuk membuat foreignkey
     user: User;
 
     @ManyToOne(() => Thread, (thread) => thread.replies, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     })
+    @JoinColumn({ name: "thread_id" }) // untuk membuat foreignkey
     thread: Thread;
 }

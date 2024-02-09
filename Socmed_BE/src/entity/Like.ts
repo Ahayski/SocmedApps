@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm"
 import { Thread } from "./Thread"
 import { User } from "./User"
 
@@ -9,11 +9,17 @@ export class Like {
     id: number
 
 
-    @ManyToOne(() => Thread, (thread) => thread.likes, {
+    @ManyToOne(() => User, (user) => user.likes, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     })
-    thread: Thread
+    @JoinColumn({ name: "user_id" }) // untuk membuat foreignkey
+    user: User;
 
-    @OneToMany(() => User, (user) => user.likes, {
+    @ManyToOne(() => Thread, (thread) => thread.likes, {
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     })
-    user: User
+    @JoinColumn({ name: "thread_id" }) // untuk membuat foreignkey
+    thread: Thread;
 }

@@ -16,22 +16,14 @@ export class Thread {
     image_thread: string
 
     @Column()
-    created_at: string
+    created_at: Date
 
-    @ManyToOne(() => User, (user) => user.threads, {
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
-    })
+    @ManyToOne(() => User, (user) => user.threads,)
     user: User
 
-    @OneToMany(() => Like, (like) => like.thread, {
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-        nullable: true
-    })
+    @OneToMany(() => Like, (like) => like.thread,)
     likes: Like[]
 
-    @OneToMany(() => Reply, (reply) => reply.user, {
-    })
+    @OneToMany(() => Reply, (reply) => reply.user,)
     replies: Reply[];
 }
