@@ -1,11 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Navbar from "../components/Navbar/Navbar";
 import HomeLayout from "../components/Home/HomeLayout";
+import Sidebar from "../components/SideBar/Sidebar";
 
 export default function Home() {
   return (
-    <Box>
-      <Flex w={"100%"} bg={"red"} h={"100%"} pos={"relative"}>
+    <Box bg={"#171923"}>
+      <Flex w={"100%"} bg={"#171923"} h={"100%"} pos={"relative"}>
         <Box w={"20%"} pos={"relative"}>
           <Box pos={"fixed"} zIndex={1} top={0} left={0} w={{ base: "16.7%" }}>
             <Navbar />
@@ -23,7 +24,7 @@ export default function Home() {
             bg={"purple"}
             overflow={"hidden"}
           >
-            Sidebar
+            <Sidebar />
           </Box>
         </Flex>
       </Flex>

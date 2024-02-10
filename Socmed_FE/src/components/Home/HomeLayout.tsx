@@ -14,7 +14,7 @@ import InputStatus from "./InputStatus";
 import React from "react";
 import ModalChat from "./ModalChat";
 import { BiSolidImageAdd } from "react-icons/bi";
-import CardContent from "../CardContent";
+import CardContent from "./CardContent";
 
 function HomeLayout() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +22,7 @@ function HomeLayout() {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   return (
-    <Box w={"100%"} h={"100vh"} bg={"#171923"}>
+    <Box w={"100%"} h={"100%"} bg={"#171923"}>
       <Heading color={"white"} fontSize={"1.7rem"} px={6} pt={6}>
         Home
       </Heading>
