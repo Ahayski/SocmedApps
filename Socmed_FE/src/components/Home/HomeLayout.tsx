@@ -14,7 +14,8 @@ import InputStatus from "./InputStatus";
 import React from "react";
 import ModalChat from "./ModalChat";
 import { BiSolidImageAdd } from "react-icons/bi";
-import CardContent from "./CardContent";
+// import CardContent from "./CardContent";
+import CardMap from "./CardMap";
 
 function HomeLayout() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,7 +63,7 @@ function HomeLayout() {
       </Modal>
 
       <Box>
-        <CardContent />
+        <CardMap />
       </Box>
     </Box>
   );

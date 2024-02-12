@@ -10,10 +10,10 @@ export class User {
     id: number
 
     @Column()
-    user_name: string
+    full_name: string
 
     @Column()
-    full_name: string
+    user_name: string
 
     @Column()
     email: string
@@ -29,19 +29,7 @@ export class User {
 
 
     @Column({ nullable: true })
-    description: string
-
-    @OneToMany(() => Thread, (thread) => thread.user, {
-    })
-    threads: Thread[]
-
-    @OneToMany(() => Thread, (thread) => thread.user, {
-    })
-    likes: Like[]
-
-    @OneToMany(() => Reply, (reply) => reply.user, {
-    })
-    replies: Reply[];
+    bio: string
 
     @ManyToMany(() => User, (user) => user.following)
     @JoinTable({
@@ -59,4 +47,18 @@ export class User {
 
     @ManyToMany(() => User, (user) => user.followers)
     following: User[];
+
+    @OneToMany(() => Thread, (thread) => thread.user, {
+    })
+    threads: Thread[]
+
+    @OneToMany(() => Thread, (thread) => thread.user, {
+    })
+    likes: Like[]
+
+    @OneToMany(() => Reply, (reply) => reply.user, {
+    })
+    replies: Reply[];
+
+    
 }
