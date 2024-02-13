@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { updateUserSchema } from "../utils/validator/UserValidator";
 import UserServices from "../services/UserServices";
-import FollowService from "../services/FollowServices";
 
 export default new (class UserControllers {
-  private followService: FollowService;
+  
 
   findAll(req: Request, res: Response) {
     UserServices.find(req, res);
@@ -17,9 +16,6 @@ export default new (class UserControllers {
     UserServices.delete(req, res);
   }
   
-
-
- 
   async update(req: Request, res: Response) {
     try {
       const id = parseInt(req.params.id, 10);

@@ -9,13 +9,13 @@ export class Thread {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({ nullable: true })
     content: string
 
     @Column({ nullable: true })
     image_thread: string
 
-    @Column()
+    @Column({type: "timestamp", default:()=> "CURRENT_TIMESTAMP"})
     created_at: Date
 
     @ManyToOne(() => User, (user) => user.threads,)

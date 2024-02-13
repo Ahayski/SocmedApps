@@ -49,27 +49,15 @@ export default new (class UserService {
     async delete(req : Request, res : Response): Promise<Response>{
       try {
         const id = parseInt(req.params.id, 10)
-        const response = await this.UserRepository.delete(id)
+        const user = await this.UserRepository.delete(id)
         return res.status(200).json({ 
           message: "Success Deleting a User",
-          data: response,
+          data: user,
         });
       } catch (error) {
-        
+        return res.status(400).json({ error: error.details[0].message });
       }
     }
-    // async getUserById(id: number): Promise<object | string> {
-    //   const response = await this.UserRepository.findOne({
-    //     where: {
-    //       id: id,
-    //     },
-    //   });
-  
-    //   return {
-    //     message: "success getting a User",
-    //     data: response,
-    //   };
-    // }
 
   
   async update(id: number, data: any): Promise<object | string> {

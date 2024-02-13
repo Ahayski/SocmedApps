@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
-import FollowService from "../services/FollowServices";
+import FollowServices from "../services/FollowServices";
 
-export class FollowController {
-  private followService: FollowService;
+export default new (class FollowController {
+  // private followService = new FollowServices();
 
-  constructor() {
-    this.followService = new FollowService();
+  async followUser(req: Request, res: Response): Promise<void> {
+  const {followerId, followingId} = req.body;
+
+  try {
+    await FollowServices.followUser(followerId,followingId)
+    res.send ('User followed succesfully')
+  } catch (error) {
+    res.status(400).json({error : error.message})
   }
-
-  
 }
+  
+})();
