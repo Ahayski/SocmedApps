@@ -1,4 +1,4 @@
-import { Like, Repository } from "typeorm"
+import {  Repository } from "typeorm"
 import { Thread } from "../entity/Thread"
 import { AppDataSource } from "../data-source"
 import { Request, Response } from "express"
@@ -13,9 +13,38 @@ export default new class ThreadServices {
             const threads = await  this.ThreadRepository.find({
                 order: {
                     id:"DESC"
+                },
+                relations : {
+                    user: true
+                },
+                select:{ 
+                    user: {
+                        user_name: true,
+                    }
                 }
             })
-            return res.status(200).json(threads)
+
+            // const response = threads.map(()=>{
+            //     ...data,
+            // })
+
+            return res.status(200).json({message : "Succes Getting All Threads",threads})
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
+
+    async findOne(req :Request, res:Response) : Promise<Response>{
+        try {
+            // mengambil id dari req params lalu diubah tipe datanya jadi integer
+            const id = parseInt(req.params.id, 10)
+            //melakukan pencarian data sesuai dari id nya
+            const threads = await  this.ThreadRepository.findOne({where: {id}})
+            if(!threads)
+            return res.status(404).json({
+                message: `Thread ID not found`
+            })
+            return res.status(200).json({message : "Succes Getting a Thread",threads})
         } catch (error) {
             return res.status(500).json(error)
         }
@@ -32,7 +61,10 @@ export default new class ThreadServices {
             //membuat sebuah object berdasarkan value yang telah di validasi
             const obj = this.ThreadRepository.create({
                 content: value.content,
-                image_thread : value.image_thread
+                image_thread : value.image_thread,
+                user :{
+                    id :2
+                }
             })
             //setelah objek dibuat lalu akan di save di database ata repository
             const threads = await  this.ThreadRepository.save(obj)
@@ -55,14 +87,24 @@ export default new class ThreadServices {
                 }
             })
 
+            //melakukan pencarian data brdasarkan id tadi,jika tidak ada makan akan dihanddle dalam error
+            if(!obj)
+            return res.status(404).json({
+                message: `Thread ID not found`
+            })
+
             //mendapatkan data dari inputannya
             const data = req.body
             //melakukan pengecekan menggunakan validator
             const {error,value} = updateThreadSchema.validate(data)
             if (error) return res.status(400).json(error.details[0].message)
 
-        
-            if (data.content){
+
+            // if (data) {
+            //     obj.content= value.content
+            //     obj.image_thread= value.image_thread
+            // }
+            if (data){
                 obj.content= value.content
             }
             if (data.image_thread){
@@ -76,6 +118,24 @@ export default new class ThreadServices {
             return res.status(500).json(error)
         }
     }
+
+    async delete(req: Request, res: Response): Promise<Response>{
+        try {
+            // mengambil id dari req params lalu diubah tipe datanya jadi integer
+            const id = parseInt(req.params.id, 10)
+            //setelah mendapatkan id lalu akan melakukan pencarian data dengan findOne sesuai id nya
+            const obj = await this.ThreadRepository.findOne({where : {id}}) 
+             //melakukan pencarian data brdasarkan id tadi,jika tidak ada makan akan dihanddle dalam error
+            if(!obj) return res.json({message :  "Thread Id not found"})
+
+            //se
+            const thread = await this.ThreadRepository.delete(id)
+            return res.status(200).json({messagae : "Succses Delete Thread", thread})
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
+
 }
 
 

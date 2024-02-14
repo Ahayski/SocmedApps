@@ -21,8 +21,10 @@ router.post("/user/follow", FollowController.followUser);
 
 //Thread
 router.get("/threads", ThreadController.findAll);
+router.get("/thread/:id", ThreadController.findOne);
 router.post("/thread", ThreadController.create);
 router.put("/thread/:id", ThreadController.update);
+router.delete("/thread/:id", ThreadController.delete);
 
 
 export default router;

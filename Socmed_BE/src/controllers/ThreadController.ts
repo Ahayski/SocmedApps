@@ -17,12 +17,13 @@ export default new (class ThreadControllers {
     ThreadServices.update(req, res);
   }
 
-  // findOne(req: Request, res: Response) {
-  //   ThreadServices.findOne(req, res);
-  // }
-  // delete(req: Request, res: Response) {
-  //   ThreadServices.delete(req, res);
-  // }
+  delete(req: Request, res: Response) {
+    ThreadServices.delete(req, res);
+  }
+
+  findOne(req: Request, res: Response) {
+    ThreadServices.findOne(req, res);
+  }
   
   // async update(req: Request, res: Response) {
   //   try {

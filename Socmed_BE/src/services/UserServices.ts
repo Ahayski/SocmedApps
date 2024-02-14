@@ -3,6 +3,7 @@ import { User } from "../entity/User";
 import { AppDataSource } from "../data-source";
 import UserController from "../controllers/UserController";
 import { Request, Response } from "express";
+import { updateUserSchema } from "../utils/validator/UserValidator";
 
 export default new (class UserService {
   private readonly UserRepository: Repository<User> =
@@ -60,11 +61,42 @@ export default new (class UserService {
     }
 
   
-  async update(id: number, data: any): Promise<object | string> {
-    const response = await this.UserRepository.update(id, data);
-    return {
-      message: "success updating a User",
-      data: response,
-    };
-  }
+    async update(req: Request, res: Response) : Promise<Response> {
+      try {
+        const id = parseInt(req.params.id, 10)
+        
+        const obj = await this.UserRepository.findOne({
+          where: {
+            id
+          }
+        })
+  
+        const data = req.body;
+  
+        const { error, value } = updateUserSchema.validate(data)
+        if(error) return res.status(400).json(error.details[0].message)
+  
+        if(data.fullname != "") {
+          obj.full_name = value.fullname
+        }
+  
+        if(data.username != "") {
+          obj.user_name = value.username
+        }
+  
+        if(data.email != "") {
+          obj.email = value.email
+        }
+  
+        if(data.password != "") {
+          obj.password = value.password
+        }
+  
+        const user = await this.UserRepository.save(obj)
+        res.status(200).json(user)
+      } catch (error) {
+        res.status(500).json(error)
+      }
+    }
+  
 })();
