@@ -33,18 +33,28 @@ export default new class AuthService {
 
     async login(reqBody: any): Promise<object | string> {
         try {
-            const checkUserName = await this.AuthRepository.findOne({ where: { user_name: reqBody.user_name } })
+            const checkUserName = await this.AuthRepository.findOne({ where: { user_name: reqBody.user_name },
+            select:{
+                id:true,
+                user_name:true,
+                full_name:true,
+                email:true,
+                password:true
+            }
+            })
             if (!checkUserName) return `Username: ${reqBody.userName} haven't registered`
+            console.log(checkUserName);
 
             const comparePassword = await bcrypt.compare(reqBody.password, checkUserName.password)
             if (!comparePassword) return `Password is wrong`
-
+            
             const obj = this.AuthRepository.create({
                 id: checkUserName.id,
                 user_name: checkUserName.user_name,
                 full_name: checkUserName.full_name,
                 email: checkUserName.email
             })
+            
 
             const token = jwt.sign({ obj }, "MATIINMIC", { expiresIn: "8h" })
 

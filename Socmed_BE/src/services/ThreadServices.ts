@@ -14,19 +14,25 @@ export default new class ThreadServices {
                 order: {
                     id:"DESC"
                 },
-                relations : {
-                    user: true
-                },
+                relations: ["user", "likes.user"],
+                // relations : {
+                //     user: true,
+                //     likes:true
+                // },
                 select:{ 
                     user: {
                         user_name: true,
+                    },
+                    likes: {
+                        id: true,
+                        
+                        user: {
+                            id: true,
+                            user_name: true
+                        }
                     }
                 }
             })
-
-            // const response = threads.map(()=>{
-            //     ...data,
-            // })
 
             return res.status(200).json({message : "Succes Getting All Threads",threads})
         } catch (error) {
@@ -54,6 +60,9 @@ export default new class ThreadServices {
         try {
             //mendapatkan data inputan
             const data = req.body
+            const loginSession = res.locals.loginSession;
+            console.log("ini session",loginSession);
+            
             //melakukan pengecekan pada joi
             const {error,value} = createThreadSchema.validate(data)
             if (error) return res.status(400).json(error.details[0].message)
@@ -63,9 +72,11 @@ export default new class ThreadServices {
                 content: value.content,
                 image_thread : value.image_thread,
                 user :{
-                    id :2
+                    id :loginSession.obj.id
                 }
             })
+            console.log("ini object",obj);
+            
             //setelah objek dibuat lalu akan di save di database ata repository
             const threads = await  this.ThreadRepository.save(obj)
             return res.status(200).json(threads)
@@ -104,7 +115,7 @@ export default new class ThreadServices {
             //     obj.content= value.content
             //     obj.image_thread= value.image_thread
             // }
-            if (data){
+            if (data.content){
                 obj.content= value.content
             }
             if (data.image_thread){

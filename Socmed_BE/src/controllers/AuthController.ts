@@ -21,11 +21,12 @@ export default new (class AuthControllers {
     try {
       const data = req.body;
 
-      console.log("Data:", data);
       const { error, value } = loginSchema.validate(data);
       if (error) return res.status(400).json(error.details[0].message);
-
+      
+      console.log("Data:", value);
       const response = await AuthServices.login(value);
+      console.log("Data:", response);
       return res.status(200).json(response);
     } catch (error) {
       return res.status(500).json(error);

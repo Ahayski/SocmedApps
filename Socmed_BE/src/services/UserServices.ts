@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source";
 import UserController from "../controllers/UserController";
 import { Request, Response } from "express";
 import { updateUserSchema } from "../utils/validator/UserValidator";
+import * as bcrypt from "bcrypt";
 
 export default new (class UserService {
   private readonly UserRepository: Repository<User> =
@@ -75,21 +76,34 @@ export default new (class UserService {
   
         const { error, value } = updateUserSchema.validate(data)
         if(error) return res.status(400).json(error.details[0].message)
-  
-        if(data.fullname != "") {
+        
+        if (data.password && data.password !== obj.password)
+
+        if(data.fullname) {
           obj.full_name = value.fullname
         }
   
-        if(data.username != "") {
+        if(data.username) {
           obj.user_name = value.username
         }
   
-        if(data.email != "") {
+        if(data.email) {
           obj.email = value.email
         }
   
-        if(data.password != "") {
-          obj.password = value.password
+        if (data.password) {
+          const hashPassword = await bcrypt.hash(data.password, 10);
+          obj.password = hashPassword;
+        }
+
+        if(data.profile_picture) {
+          obj.profile_picture = value.profile_picture
+        }
+        if(data.image_cover) {
+          obj.image_cover = value.image_cover
+        }
+        if(data.bio) {
+          obj.bio = value.bio
         }
   
         const user = await this.UserRepository.save(obj)
