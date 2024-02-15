@@ -14,7 +14,7 @@ export class Reply {
     @Column({ nullable: true })
     file_reply: string
 
-    @Column()
+    @Column({ type: "timestamp"})
     created_at: Date
 
     @ManyToOne(() => User, (user) => user.replies, {
