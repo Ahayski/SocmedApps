@@ -3,6 +3,7 @@ import { User } from "../entity/User";
 import { AppDataSource } from "../data-source";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
 export default new class AuthService {
     private readonly AuthRepository: Repository<User> = AppDataSource.getRepository(User)
@@ -18,7 +19,7 @@ export default new class AuthService {
                 user_name: reqBody.user_name,
                 full_name: reqBody.full_name,
                 email: reqBody.email,
-                password: hashPassword,
+                password: hashPassword
             })
             const resRegist = await this.AuthRepository.save(obj)
 
@@ -64,6 +65,20 @@ export default new class AuthService {
             }
         } catch (error) {
             return "something error while  loggin"
+        }
+    }
+    async check(req: Request, res: Response): Promise<Response | void> {
+        try {
+            const userLogin = res.locals.loginSession;
+            
+            const user = await this.AuthRepository.findOne({
+                where: {
+                    id: userLogin.obj.id
+                }
+            })
+            return res.status(200).json(user)
+        } catch (error) {
+            return res.status(500).json(error)
         }
     }
 }

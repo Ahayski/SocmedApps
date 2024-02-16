@@ -32,4 +32,8 @@ export default new (class AuthControllers {
       return res.status(500).json(error);
     }
   }
+
+  async check(req: Request, res: Response) {
+  AuthServices.check(req,res)
+  }
 })();

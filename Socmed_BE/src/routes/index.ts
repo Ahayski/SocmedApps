@@ -12,6 +12,7 @@ const router = express.Router();
 //Auth
 router.post("/auth/register", AuthController.register);
 router.post("/auth/login", AuthController.login);
+router.get("/auth/check", AuthMiddleware.Auth,AuthController.check);
 
 //Userr
 router.get("/users", UserController.findAll);
