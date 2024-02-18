@@ -14,18 +14,28 @@ export default new class ThreadServices {
                 order: {
                     id:"DESC"
                 },
-                relations: ["user", "likes.user"],
+                relations: ["user", "likes.user","replies.user"],
                 // relations : {
                 //     user: true,
-                //     likes:true
+                //     likes:true,
+                //     replies:true,
                 // },
                 select:{ 
                     user: {
                         user_name: true,
                     },
                     likes: {
+                        id: true,    
+                        user: {
+                            id: true,
+                            user_name: true
+                        }
+                    },
+                    replies: {
                         id: true,
-                        
+                        content:true,
+                        file_reply:true,
+                        created_at:true,
                         user: {
                             id: true,
                             user_name: true
@@ -33,7 +43,8 @@ export default new class ThreadServices {
                     }
                 }
             })
-
+            console.log(threads);
+            
             return res.status(200).json({message : "Succes Getting All Threads",threads})
         } catch (error) {
             return res.status(500).json(error)

@@ -5,6 +5,7 @@ import UserController from "../controllers/UserController";
 import FollowController from "../controllers/FollowController";
 import ThreadController from "../controllers/ThreadController";
 import LikeController from "../controllers/LikeController";
+import ReplyController from "../controllers/ReplyController";
 
 const router = express.Router();
 // const upload = multer();
@@ -32,5 +33,8 @@ router.delete("/thread/:id", ThreadController.delete);
 //Like
 router.post("/likes", AuthMiddleware.Auth, LikeController.create);
 
+//Reply
+router.post("/replies", AuthMiddleware.Auth, ReplyController.create);
+router.get("/replies", ReplyController.find);
 
 export default router;

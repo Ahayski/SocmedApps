@@ -31,28 +31,30 @@ export class User {
     @Column({ nullable: true })
     bio: string
 
+   
+
     @ManyToMany(() => User, (user) => user.following)
     @JoinTable({
-        name: "follow",
+        name: "follower",
         joinColumn: {
-            name: "following_id",
-            referencedColumnName: "id",
+            name: "follower",
+            referencedColumnName: "id"
         },
         inverseJoinColumn: {
-            name: "follower_id",
-            referencedColumnName: "id",
-        },
+            name: "following",
+            referencedColumnName: "id"
+        }
     })
-    followers: User[];
+    follower: User[]
 
-    @ManyToMany(() => User, (user) => user.followers)
-    following: User[];
+    @ManyToMany(() => User, (user) => user.follower)
+    following: User[]
 
     @OneToMany(() => Thread, (thread) => thread.user, {
     })
     threads: Thread[]
 
-    @OneToMany(() => Thread, (thread) => thread.user, {
+    @OneToMany(() => Like, (Like) => Like.user, {
     })
     likes: Like[]
 

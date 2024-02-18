@@ -34,7 +34,7 @@ export default new class AuthService {
 
     async login(reqBody: any): Promise<object | string> {
         try {
-            const checkUserName = await this.AuthRepository.findOne({ where: { user_name: reqBody.user_name },
+            const chckEmail = await this.AuthRepository.findOne({ where: { email: reqBody.email },
             select:{
                 id:true,
                 user_name:true,
@@ -43,17 +43,17 @@ export default new class AuthService {
                 password:true
             }
             })
-            if (!checkUserName) return `Username: ${reqBody.userName} haven't registered`
-            console.log(checkUserName);
+            if (!chckEmail) return `Username: ${reqBody.userName} haven't registered`
+            console.log(chckEmail);
 
-            const comparePassword = await bcrypt.compare(reqBody.password, checkUserName.password)
+            const comparePassword = await bcrypt.compare(reqBody.password, chckEmail.password)
             if (!comparePassword) return `Password is wrong`
             
             const obj = this.AuthRepository.create({
-                id: checkUserName.id,
-                user_name: checkUserName.user_name,
-                full_name: checkUserName.full_name,
-                email: checkUserName.email
+                id: chckEmail.id,
+                user_name: chckEmail.user_name,
+                full_name: chckEmail.full_name,
+                email: chckEmail.email
             })
             
 
