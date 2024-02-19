@@ -10,8 +10,10 @@ export default new class LikeServices {
     async find(req: Request, res :Response): Promise<Response>{
         try {
             const like = await this.LikeRepository.find({
-                relations :["user","reply"]
+                relations :["user","thread"]
             })
+            console.log(like);
+            
             return res.status(200).json({
                 message: "Success",
                 data: like
@@ -34,6 +36,7 @@ export default new class LikeServices {
             const loginSession = res.locals.loginSession
             console.log("ini session",loginSession);
             
+            //UnLike Handdle I
             const likeSelected = await this.LikeRepository.findOne({
                 where: {
                     user: {
@@ -44,7 +47,8 @@ export default new class LikeServices {
                     }
                 }
             })
-    
+
+            //Logic UnLike Handdle I
             if(likeSelected) {
                 await this.LikeRepository.remove(likeSelected);
                 return res.status(200).json({
