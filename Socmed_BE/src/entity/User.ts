@@ -49,7 +49,7 @@ export class User {
 
     @ManyToMany(() => User, (user) => user.follower)
     following: User[]
-
+ 
     @OneToMany(() => Thread, (thread) => thread.user, {
     })
     threads: Thread[]

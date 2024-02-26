@@ -13,9 +13,11 @@ AppDataSource.initialize()
         // di luar domain atau origin (asal) situs web yang sedang mereka kunjungi. Origin mencakup 
         // protokol (http/https), domain, dan nomor port.
         app.use(cors({
+            credential:true,
             origin: '*',
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            allowedHeaders: ['Content-Type', 'Authorization']
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            preflightContinue: true,
         }))
 
         app.use(express.json())

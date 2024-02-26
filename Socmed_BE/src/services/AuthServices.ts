@@ -10,7 +10,7 @@ export default new class AuthService {
 
     async register(reqBody: any): Promise<object | string> {
         try {
-
+            console.log(reqBody)
             const checkUserName = await this.AuthRepository.count({ where: { user_name: reqBody.user_name } })
             if (checkUserName > 0) return `Username: ${reqBody.user_name} has already used`
 
@@ -53,7 +53,10 @@ export default new class AuthService {
                 id: chckEmail.id,
                 user_name: chckEmail.user_name,
                 full_name: chckEmail.full_name,
-                email: chckEmail.email
+                email: chckEmail.email,
+                profile_picture: chckEmail.profile_picture,
+                image_cover: chckEmail.image_cover,
+                bio: chckEmail.bio
             })
             
 
@@ -61,7 +64,8 @@ export default new class AuthService {
 
             return {
                 message: "Login success",
-                token
+                token,
+                data : obj
             }
         } catch (error) {
             return "something error while  loggin"

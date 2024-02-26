@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 function Profile() {
-  const boxBg = useColorModeValue("#1a202c ", "white !important");
+  const boxBg = useColorModeValue("#1a202c ", "#1a202c");
   const mainText = useColorModeValue("white", "white");
   const secondaryText = useColorModeValue("gray.400", "gray.400");
   return (
@@ -46,7 +46,7 @@ function Profile() {
             color={"white"}
           >
             Edit Profile
-          </Button>
+          </Button>  
         </Box>
         <Text
           fontWeight="600"

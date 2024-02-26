@@ -6,6 +6,7 @@ import UserController from "../controllers/UserController";
 import ThreadController from "../controllers/ThreadController";
 import LikeController from "../controllers/LikeController";
 import ReplyController from "../controllers/ReplyController";
+import UploadFile from "../middlewares/UploadFile";
 
 const router = express.Router();
 // const upload = multer();
@@ -26,7 +27,7 @@ router.delete("/user/:id", AuthMiddleware.Auth, UserController.delete);
 //Thread
 router.get("/threads", ThreadController.findAll);
 router.get("/thread/:id", ThreadController.findOne);
-router.post("/thread",AuthMiddleware.Auth, ThreadController.create);
+router.post("/thread",AuthMiddleware.Auth, UploadFile.upload("image_thread"),ThreadController.create);
 router.put("/thread/:id", ThreadController.update);
 router.delete("/thread/:id", ThreadController.delete);
 

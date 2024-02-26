@@ -3,6 +3,7 @@ import { Thread } from "../entity/Thread"
 import { AppDataSource } from "../data-source"
 import { Request, Response } from "express"
 import { createThreadSchema, updateThreadSchema } from "../utils/validator/ThreadValidator"
+import cloudinary from "../libs/cloudinary"
 
 export default new class ThreadServices {
     private readonly ThreadRepository : Repository<Thread> = AppDataSource.getRepository(Thread)
@@ -70,7 +71,10 @@ export default new class ThreadServices {
     async create(req :Request, res:Response): Promise<Response>{
         try {
             //mendapatkan data inputan
-            const data = req.body
+            const data = {
+                content: req.body.content,
+                image_thread: res.locals.filename,
+            }
             const loginSession = res.locals.loginSession;
             console.log("ini session",loginSession);
             
@@ -78,10 +82,13 @@ export default new class ThreadServices {
             const {error,value} = createThreadSchema.validate(data)
             if (error) return res.status(400).json(error.details[0].message)
 
+            cloudinary.upload()
+            const cloudinaryRes = await cloudinary.destination(value.image_thread)
+
             //membuat sebuah object berdasarkan value yang telah di validasi
             const obj = this.ThreadRepository.create({
                 content: value.content,
-                image_thread : value.image_thread,
+                image_thread : cloudinaryRes.secure_url,
                 user :{
                     id :loginSession.obj.id
                 }
@@ -116,12 +123,16 @@ export default new class ThreadServices {
             })
 
             //mendapatkan data dari inputannya
-            const data = req.body
+            const data = {
+                content: req.body.content,
+                image_thread: res.locals.filename,
+            }
             //melakukan pengecekan menggunakan validator
             const {error,value} = updateThreadSchema.validate(data)
             if (error) return res.status(400).json(error.details[0].message)
 
-
+            cloudinary.upload()
+            const cloudinaryRes = await cloudinary.destination(value.image_thread)
             // if (data) {
             //     obj.content= value.content
             //     obj.image_thread= value.image_thread
@@ -130,7 +141,7 @@ export default new class ThreadServices {
                 obj.content= value.content
             }
             if (data.image_thread){
-                obj.image_thread= value.image_thread
+                obj.image_thread= cloudinaryRes.secure_url
             }
 
             const thread = await  this.ThreadRepository.save(obj)

@@ -17,7 +17,7 @@ import { BiSolidImageAdd } from "react-icons/bi";
 // import CardContent from "./CardContent";
 import CardMap from "./CardMap";
 
-function HomeLayout() {
+export const HomeLayout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
@@ -69,4 +69,4 @@ function HomeLayout() {
   );
 }
 
-export default HomeLayout;
+
