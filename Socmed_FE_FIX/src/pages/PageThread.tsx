@@ -1,10 +1,10 @@
-import { HomeThread } from './LandingPage/thread/HomeThread'
-import { LandingPage } from '../layout/LandingPage'
+import { HomeThread } from "../features/thread/HomeThread";
+import { LandingPage } from "../layout/LandingPage";
 
 export const PageThread = () => {
   return (
     <LandingPage>
-        <HomeThread/>
+      <HomeThread />
     </LandingPage>
-  )
-}
+  );
+};

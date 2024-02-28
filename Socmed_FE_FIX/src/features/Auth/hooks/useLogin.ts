@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IUserLogin } from "../../../interface/user";
 import { API } from "../../../libs/api";
 import useToast from "../../../hooks/useToast";
 import { useDispatch } from "react-redux";
-import { AUTH_CHECK, AUTH_LOGIN } from "../../../store/rootReducer";
+import { AUTH_LOGIN } from "../../../store/rootReducer";
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export function useLogin() {
     password: "",
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -28,8 +28,8 @@ export function useLogin() {
       const response = await API.post("/auth/login", form);
       console.log(response);
       dispatch(AUTH_LOGIN(response.data));
-      dispatch(AUTH_CHECK(response?.data.user));
-      //   localStorage.setItem("token", response.data.token);
+      // dispatch(AUTH_CHECK(response?.data.user));
+      localStorage.setItem("authData", JSON.stringify(response.data.user));
       if (response) toast("Success", "Login successfully", "success");
 
       navigate("/");

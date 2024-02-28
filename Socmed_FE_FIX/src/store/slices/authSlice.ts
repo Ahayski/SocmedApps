@@ -3,7 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setAuthToken } from "../../libs/api";
 import { IUser } from "../../interface/user";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 // const initialAuthState: IReduxUser = {
 //     id: 0,
@@ -36,8 +36,8 @@ export const authSlice = createSlice({
   initialState: initialAuthState,
   reducers: {
     AUTH_LOGIN: (state, action) => {
-      const userLogin = jwtDecode(action.payload.token);
-      console.log("ini userLogin", userLogin);
+      // const userLogin = jwtDecode(action.payload.token);
+      // console.log("ini userLogin", userLogin);
       const {
         id,
         email,
@@ -48,7 +48,7 @@ export const authSlice = createSlice({
         image_cover,
         followers_count,
         followings_count,
-      } = action.payload.token;
+      } = action.payload.user;
 
       const { token } = action.payload;
 
@@ -70,7 +70,7 @@ export const authSlice = createSlice({
         id,
         email,
         full_name,
-        username,
+        user_name,
         bio,
         profile_picture,
         image_cover,
@@ -81,7 +81,7 @@ export const authSlice = createSlice({
       state.id = id;
       state.email = email;
       state.full_name = full_name;
-      state.user_name = username;
+      state.user_name = user_name;
       state.bio = bio;
       state.profile_picture = profile_picture;
       state.image_cover = image_cover;

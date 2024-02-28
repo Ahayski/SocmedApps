@@ -14,7 +14,7 @@ const router = express.Router();
 //Auth
 router.post("/auth/register", AuthController.register);
 router.post("/auth/login", AuthController.login);
-router.get("/auth/check", AuthMiddleware.Auth,AuthController.check);
+router.get("/auth/check", AuthMiddleware.Auth, AuthController.check);
 
 //Userr
 router.get("/users", UserController.findAll);
@@ -27,12 +27,17 @@ router.delete("/user/:id", AuthMiddleware.Auth, UserController.delete);
 //Thread
 router.get("/threads", ThreadController.findAll);
 router.get("/thread/:id", ThreadController.findOne);
-router.post("/thread",AuthMiddleware.Auth, UploadFile.upload("image_thread"),ThreadController.create);
+router.post(
+  "/thread",
+  AuthMiddleware.Auth,
+  UploadFile.upload("image_thread"),
+  ThreadController.create
+);
 router.put("/thread/:id", ThreadController.update);
 router.delete("/thread/:id", ThreadController.delete);
 
 //Like
-router.get("/likes",  LikeController.findAll);
+router.get("/likes", LikeController.findAll);
 router.post("/likes", AuthMiddleware.Auth, LikeController.create);
 
 //Reply
