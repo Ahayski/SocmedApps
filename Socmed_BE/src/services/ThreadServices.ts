@@ -88,9 +88,14 @@ export default new (class ThreadServices {
           content: req.body.content,
           user: loginSession.obj.id,
         };
-      } else {
+      } else if (req.file) {
         data = {
           content: req.body.content,
+          image_thread: res.locals.filename,
+          user: loginSession.obj.id,
+        };
+      } else {
+        data = {
           image_thread: res.locals.filename,
           user: loginSession.obj.id,
         };

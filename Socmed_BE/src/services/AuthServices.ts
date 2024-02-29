@@ -12,11 +12,10 @@ export default new (class AuthService {
   async register(reqBody: any): Promise<object | string> {
     try {
       console.log(reqBody);
-      const checkUserName = await this.AuthRepository.count({
-        where: { user_name: reqBody.user_name },
+      const checkEmail = await this.AuthRepository.count({
+        where: { email: reqBody.email },
       });
-      if (checkUserName > 0)
-        return `Username: ${reqBody.user_name} has already used`;
+      if (checkEmail > 0) return `Email: ${reqBody.Email} has already used`;
 
       const hashPassword = await bcrypt.hash(reqBody.password, 10);
       const obj = this.AuthRepository.create({
