@@ -40,7 +40,11 @@ export default function CardContent(props: IThreadCard) {
           </Box>
           <Box ml={2}>
             <HStack>
-              <Heading color={"white"} fontSize={"1rem"}>
+              <Heading
+                color={"white"}
+                fontSize={["0.7rem", "0.8rem", "0.9rem"]}
+                textTransform={"capitalize"}
+              >
                 {props.user?.full_name}
               </Heading>
               <Text color={"gray.400"} fontSize={"0.7rem"}>

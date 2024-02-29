@@ -3,11 +3,15 @@ import IconNav from "./components/IconNav";
 import { CiLogout } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { FaFeatherAlt } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { AUTH_LOGOUT } from "../../../store/rootReducer";
 
 export default function SideNavbar() {
   const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
   const handleDelete = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("authData");
+    dispatch(AUTH_LOGOUT());
     window.location.href = "/login";
   };
   return (

@@ -25,7 +25,7 @@ router.delete("/user/:id", AuthMiddleware.Auth, UserController.delete);
 // router.post("/user/follow", FollowController.followUser);
 
 //Thread
-router.get("/threads", ThreadController.findAll);
+router.get("/thread", ThreadController.findAll);
 router.get("/thread/:id", ThreadController.findOne);
 router.post(
   "/thread",

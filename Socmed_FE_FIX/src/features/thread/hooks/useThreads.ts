@@ -15,7 +15,7 @@ export function useThreads() {
   });
 
   async function getThreads() {
-    const response = await API.get("/threads");
+    const response = await API.get("/thread");
     console.log("ini thread response", response);
     dispatch(GET_THREADS(response.data.threads));
   }
