@@ -1,4 +1,16 @@
-import { Avatar, Box, HStack, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  HStack,
+  Heading,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
+import { SlOptions } from "react-icons/sl";
 import { FaHeart } from "react-icons/fa";
 import { MdOutlineComment } from "react-icons/md";
 // import { IThreads } from "../../../mocks/thread";
@@ -10,17 +22,6 @@ import { formatDistanceToNow, parseISO } from "date-fns";
 export default function CardContent(props: IThreadCard) {
   const [like, setLike] = useState(false);
 
-  // const {
-  //   id,
-  //   avatar,
-  //   profileName,
-  //   userName,
-  //   content,
-  //   image_content,
-  //   datePost,
-  //   likes,
-  //   replies,
-  // } = props;
   return (
     <>
       <Box
@@ -38,8 +39,8 @@ export default function CardContent(props: IThreadCard) {
               src={props.user?.profile_picture ?? "/profile.jpg"}
             />
           </Box>
-          <Box ml={2}>
-            <HStack>
+          <Box ml={2} w={"100%"}>
+            <HStack wrap={"wrap"}>
               <Heading
                 color={"white"}
                 fontSize={["0.7rem", "0.8rem", "0.9rem"]}
@@ -47,35 +48,61 @@ export default function CardContent(props: IThreadCard) {
               >
                 {props.user?.full_name}
               </Heading>
-              <Text color={"gray.400"} fontSize={"0.7rem"}>
+
+              <Text
+                color={"gray.400"}
+                fontSize={{ base: "0.6rem", md: "0.7rem" }}
+              >
                 @{props.user?.user_name}
               </Text>
-              <Text color={"gray.400"} fontSize={"0.7rem"}>
+
+              <Text
+                color={"gray.400"}
+                fontSize={{ base: "0.6rem", md: "0.7rem" }}
+              >
                 {props.created_at &&
                   formatDistanceToNow(parseISO(props.created_at), {
                     addSuffix: true,
                     includeSeconds: true,
                   })}
               </Text>
+
+              <Box h={"15px"} ml={"auto"} px={2} textAlign={"center"}>
+                <Menu isLazy>
+                  <MenuButton color={"white"}>
+                    <SlOptions />
+                  </MenuButton>
+                  <MenuList textAlign={"left"}>
+                    <MenuItem
+                    // onClick={() => hendelDelete(data.id, data.author.id)}
+                    >
+                      Delete
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </Box>
             </HStack>
             <Text color={"white"} fontSize={"0.8rem"}>
               {props.content}
             </Text>
-            <Box
-              w={["8rem", "15rem", "20rem"]}
-              h={["10rem", "11rem", "auto"]}
-              mt={4}
-              borderRadius={"20px"}
-              overflow={"hidden"}
-            >
-              {props.image_thread && (
+
+            {props.image_thread && (
+              <Box
+                w={["10rem", "15rem", "25rem"]}
+                my={3}
+                height={["10rem", "11rem", "auto"]}
+                bg={"red"}
+                borderRadius={"20px"}
+                overflow={"hidden"}
+              >
                 <Image
                   boxSize="full"
                   objectFit="cover"
                   src={props.image_thread}
+                  alt="image"
                 />
-              )}
-            </Box>
+              </Box>
+            )}
             <HStack mt={3} px={4}>
               <Box
                 onClick={() => setLike(!like)}

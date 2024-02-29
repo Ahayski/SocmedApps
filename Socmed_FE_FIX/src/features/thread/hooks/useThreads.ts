@@ -31,6 +31,10 @@ export function useThreads() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      setForm({
+        content: "",
+        image_thread: "",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -60,5 +64,12 @@ export function useThreads() {
   function handleButtonClick() {
     fileInputRef.current?.click();
   }
-  return { handleChange, handlePost, fileInputRef, handleButtonClick, thread };
+  return {
+    handleChange,
+    handlePost,
+    fileInputRef,
+    handleButtonClick,
+    thread,
+    form,
+  };
 }

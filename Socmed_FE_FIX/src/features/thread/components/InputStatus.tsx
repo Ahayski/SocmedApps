@@ -15,7 +15,7 @@ import { useThreads } from "../hooks/useThreads";
 
 function InputStatus() {
   const auth = useSelector((state: RootState) => state.auth);
-  const { handleChange, handlePost, fileInputRef, handleButtonClick } =
+  const { handleChange, handlePost, fileInputRef, handleButtonClick, form } =
     useThreads();
   return (
     <Box w={"100%"} mt={6} px={6} borderBottom={"1px solid #555"} pb={3}>
@@ -33,6 +33,7 @@ function InputStatus() {
         >
           <FormControl w={"100%"} display={"flex"} gap={3}>
             <Input
+              value={form.content}
               type="text"
               color={"white"}
               placeholder="What's is Happening ?"

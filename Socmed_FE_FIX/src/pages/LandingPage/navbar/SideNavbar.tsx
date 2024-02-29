@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaFeatherAlt } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { AUTH_LOGOUT } from "../../../store/rootReducer";
+// import { TbLogout2 } from "react-icons/tb";
 
 export default function SideNavbar() {
   const token = localStorage.getItem("token");
@@ -43,12 +44,12 @@ export default function SideNavbar() {
         </Button>
       </Box>
       {token ? (
-        <Box onClick={handleDelete}>
+        <Box pos={"relative"} top={"12rem"} onClick={handleDelete}>
           <HStack
             color={"white"}
             fontSize={"1.3rem"}
             px={4}
-            mt={200}
+            // mt={200}
             _hover={{ cursor: "pointer", color: "green" }}
           >
             <Text>
@@ -56,13 +57,26 @@ export default function SideNavbar() {
             </Text>{" "}
             <Text
               fontSize={"0.9rem"}
-              display={{ base: "none", md: "inline-block" }}
+              display={{ base: "none", md: "none", lg: "inline-block" }}
             >
               Logout
             </Text>
           </HStack>
         </Box>
       ) : (
+        // <Box pos={"relative"} top={"12rem"} onClick={handleDelete}>
+        //   <HStack color={"white"} mt={5}>
+        //     <Text fontSize={"1.7rem"}>
+        //       <TbLogout2 />
+        //     </Text>
+        //     <Text
+        //       fontSize={"0.9rem"}
+        //       display={{ base: "none", md: "none", lg: "inline-block" }}
+        //     >
+        //       Logout
+        //     </Text>
+        //   </HStack>
+        // </Box>
         <Box>
           <Link to="/login">
             <HStack color={"white"} fontSize={"1.3rem"} px={4} mt={200}>

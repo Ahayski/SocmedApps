@@ -8,7 +8,7 @@ export interface IThreadPost {
 export interface IThreadCard {
   id?: number;
   user?: IUser;
-  created_at?: string;
+  created_at: string;
   // profile_picture: string;
   // profile_name: string;
   // username: string;
