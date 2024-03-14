@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   HStack,
   Heading,
   Image,
@@ -15,12 +16,38 @@ import { FaHeart } from "react-icons/fa";
 import { MdOutlineComment } from "react-icons/md";
 // import { IThreads } from "../../../mocks/thread";
 // import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IThreadCard } from "../../../interface/thread";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { useThreadCard } from "../hooks/useThreadCard";
 
 export default function CardContent(props: IThreadCard) {
-  const [like, setLike] = useState(false);
+  const navigate = useNavigate();
+  const { handlePostLike } = useThreadCard();
+
+  const [liked, setLiked] = useState<boolean>(() => {
+    // Membaca status like dari local storage saat komponen dimuat
+    const likedFromStorage = localStorage.getItem(`thread_${props.id}_liked`);
+    return likedFromStorage
+      ? JSON.parse(likedFromStorage)
+      : props.is_liked || false;
+  });
+
+  const [likeCount, setLikeCount] = useState<number>(props.count_like ?? 1);
+
+  useEffect(() => {
+    // Menyimpan status like ke dalam local storage setelah perubahan
+    localStorage.setItem(`thread_${props.id}_liked`, JSON.stringify(liked));
+  }, [props.id, liked]);
+
+  const handleLikeClick = () => {
+    if (props.id) {
+      handlePostLike(props.id, !liked);
+      setLiked(!liked);
+      setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1));
+    }
+  };
 
   return (
     <>
@@ -104,12 +131,12 @@ export default function CardContent(props: IThreadCard) {
               </Box>
             )}
             <HStack mt={3} px={4}>
-              <Box
-                onClick={() => setLike(!like)}
+              {/* <Box
+                onClick={() => setLiked(!liked)}
                 fontSize={"1rem"}
                 color={"white"}
               >
-                {like ? (
+                {liked ? (
                   <Text color={"red"}>
                     {" "}
                     <FaHeart />
@@ -117,11 +144,31 @@ export default function CardContent(props: IThreadCard) {
                 ) : (
                   <FaHeart />
                 )}
-              </Box>
-              <Text color={"white"} fontSize={"0.9rem"}>
+              </Box> */}
+
+              {/* <Text color={"white"} fontSize={"0.9rem"}>
                 {" "}
-                {/* {likes} */}
-              </Text>
+                {likes}
+              </Text> */}
+
+              <Button
+                onClick={handleLikeClick}
+                borderRadius={20}
+                w={"50px"}
+                variant="ghost"
+              >
+                {likes?.map((likes) => likes.user.id).includes(user.id) ? (
+                  <BiSolidLike />
+                ) : (
+                  <BiLike />
+                )}
+                <Text>
+                  &nbsp; &nbsp;
+                  {likeCount}
+                  &nbsp; Likes
+                </Text>
+              </Button>
+
               {/* <Link to={`/detailStatus/:${id}`}> */}
               <Box
                 fontSize={"1rem"}

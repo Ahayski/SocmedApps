@@ -44,4 +44,23 @@ router.post("/likes", AuthMiddleware.Auth, LikeController.create);
 router.post("/replies", AuthMiddleware.Auth, ReplyController.create);
 router.get("/replies", ReplyController.find);
 
+// NOTIFICATION SSE
+router.get("/notification", (req: express.Request, res: express.Response) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  res.write("event: message\n");
+  function sendNotification(data: any) {
+    res.write("Data : " + data + "\n\n");
+  }
+
+  router.get("/new-thread", (req, res) => {
+    const thread = JSON.stringify({ data: "New Thread!" });
+    sendNotification(thread);
+
+    res.sendStatus(200);
+  });
+});
+
 export default router;

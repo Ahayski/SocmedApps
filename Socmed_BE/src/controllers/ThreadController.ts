@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { updateUserSchema } from "../utils/validator/UserValidator";
 import ThreadServices from "../services/ThreadServices";
+import ThreadWorker from "../workers/ThreadWorker";
+import ThreadQueue from "../queue/ThreadQueue";
 
 export default new (class ThreadControllers {
-  
-
   findAll(req: Request, res: Response) {
     ThreadServices.find(req, res);
   }
 
   create(req: Request, res: Response) {
-    ThreadServices.create(req, res);
+    ThreadQueue.create(req, res);
   }
 
   update(req: Request, res: Response) {
@@ -24,7 +24,7 @@ export default new (class ThreadControllers {
   findOne(req: Request, res: Response) {
     ThreadServices.findOne(req, res);
   }
-  
+
   // async update(req: Request, res: Response) {
   //   try {
   //     const id = parseInt(req.params.id, 10);
