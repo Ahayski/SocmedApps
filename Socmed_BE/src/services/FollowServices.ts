@@ -1,56 +1,70 @@
-// import { Repository, getRepository } from "typeorm";
-// import { AppDataSource } from "../data-source";
-// import { User } from "../entity/User";
-// import { Request, Response } from "express";
+import { Equal, Repository } from "typeorm";
+import { Follow } from "../entity/Follow";
+import { AppDataSource } from "../data-source";
+import { User } from "../entity/User";
+import ResponseError from "../error/responseError";
 
-// export default new class FollowService {
-//   private readonly UserRepository: Repository<User> = AppDataSource.getRepository(User);
+export default new (class FollowService {
+  private readonly FollowRepository: Repository<Follow> =
+    AppDataSource.getRepository(Follow);
 
-//     async follow( req: Request, res: Response): Promise<Response> {
-//         try {
-//             const loginSession = res.locals.loginSession;
-//             const followingId = Number(req.body.following);
+  async getFollows(id: any) {
+    const follower = await AppDataSource.getRepository(User).find({
+      where: { following: { follower: Equal(id) } },
+      relations: {
+        following: true,
+      },
+    });
 
-//             const follower = await this.UserRepository.findOne({
-//                 where: {
-//                     id: loginSession.user.id
-//                 },
-//                 relations: ["following"]
-//             })
+    const following = await AppDataSource.getRepository(User).find({
+      where: { follower: { following: Equal(id) } },
+      relations: {
+        follower: true,
+      },
+    });
 
-//             const following = await this.UserRepository.findOne({
-//                 where: {
-//                     id: followingId
-//                 }
-//             })
+    return {
+      follower,
+      following,
+    };
+  }
 
-//             if (!follower || !following) {
-//                 return res.status(404).json({ error: "User not found" });
-//             }
+  async getFollow(id) {
+    const check = await this.FollowRepository.count({
+      where: {
+        following: Equal(id),
+        follower: Equal(id),
+      },
+    });
+    if (check !== 0) return 0;
+    return false;
+  }
 
-//             const isFollowing = follower.following.some(
-//                 (user) => user.id === following.id
-//             );
-//             if (isFollowing) {
-//                 follower.following = follower.following.filter(
-//                 (user) => user.id !== following.id
-//                 )
-//             } else {
-//                 follower.following.push(following)
-//             }
+  async follow(to, from) {
+    const chkFollow = await this.FollowRepository.countBy({
+      following: Equal(from),
+      follower: Equal(to),
+    });
+    if (chkFollow) throw new ResponseError(400, "You already follow this User");
+    await this.FollowRepository.save({ following: from, follower: to });
+    return {
+      message: "Follow success",
+    };
+  }
 
-//             await this.UserRepository.save(follower);
-//             ReidsClient.del(loginSession.user.id.toString());
-//             return res.status(200).json({
-//                 message: isFollowing ? "Unfollowed" : "Followed",
-//                 user: follower.full_name,
-//                 following: following.full_name
-//             })
-//             } catch (error) {
-//                 return res.status(500).json({
-//                     error: "Error while following/unfollowing user"
-//             })
-//         }
-//     }
- 
-// }
+  async unfollow(to, from) {
+    const getFollow = await this.FollowRepository.findOne({
+      where: { following: Equal(from), follower: Equal(to) },
+      relations: {
+        following: true,
+        follower: true,
+      },
+    });
+    if (!getFollow)
+      throw new ResponseError(400, "You already unfollow this User");
+    await this.FollowRepository.delete(getFollow.id);
+    return {
+      message: "Unfollow success",
+    };
+  }
+})();
